@@ -10,7 +10,7 @@ exports.addExpense = async (req, res, next) =>{
    }
 }
 
-exports.getExpense = async (req, res, next)=>{
+exports.getExpense = async (req, res)=>{
     Expense.findAll().then(expenses =>{
         return res.status(200).json({expenses, success: true})
     })
@@ -20,13 +20,14 @@ exports.getExpense = async (req, res, next)=>{
 }
 
 exports.deleteExpense = async (req, res)=>{
-    const eid = req.params.id;
+    const expenseid = req.params.expenseid;
     try{
-        if(req.params.id=='undefined'){
-            console.log('ID is missing');
-            return res.status(400).json({err: 'ID is missing'})
-        }
-      await Expense.destroy({where: {id: eid}});
+        // if(expenseid== undefined || expenseid.length == 0){
+        //   return  res.status(400).json({success: false})
+            // console.log('ID is missing');
+            // return res.status(400).json({err: 'ID is missing'})
+       // }
+      await Expense.destroy({where: {id: expenseid}});
       res.sendStatus(200);
     } catch(err){
         console.log(err);
