@@ -4,10 +4,12 @@ function addNewExpense(e){
     const expenseDetails ={
         expenseamount: e.target.expenseamount.value,
         description: e.target.description.value,
-        category: e.target.category.value
+        category: e.target.category.value,
+    
     }
     console.log(expenseDetails);
-    axios.post('http://localhost:3000/expense/addexpense', expenseDetails)
+    const token = localStorage.getItem('token');
+    axios.post('http://localhost:3000/expense/addexpense', expenseDetails, { headers:{"Authorization": token} })
     .then((response) =>{
         addNewExpenseToUI(response.data.expenseDeatils);
     }).catch(err => console.log(err))
@@ -15,7 +17,8 @@ function addNewExpense(e){
 }
 
 document.addEventListener('DOMContentLoaded', ()=>{
-    axios.get('http://localhost:3000/expense/getexpenses')
+    const token = localStorage.getItem('token')
+    axios.get('http://localhost:3000/expense/getexpenses', { headers: {'Authorization': token}})
      .then(response =>{
         response.data.expenses.forEach(expense=> {
           addNewExpenseToUI(expense)  
@@ -51,9 +54,4 @@ function deleteExpense(expenseid) {
     const expenseElemId = `expense-${expenseid}`;
     document.getElementById(expenseElemId).remove();
  
-//     const parentNode = document.getElementById("listOfExpense");
-//     const childNodeToBeDeleted = document.getElementById(expenseid);
-//     if (childNodeToBeDeleted) {
-//      parentNode.removeChild(childNodeToBeDeleted);
-//    }
  }

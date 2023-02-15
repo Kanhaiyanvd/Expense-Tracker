@@ -9,6 +9,7 @@ function login(event) {
   axios.post('http://localhost:3000/user/login', loginDetails)
    .then(response => {
     alert(response.data.message)
+    localStorage.setItem('token',response.data.token)
     window.location.href = "../ExpanseTracker/index.html"
    })
    .catch(err => {
