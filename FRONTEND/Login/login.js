@@ -10,7 +10,7 @@ function login(event) {
    .then(response => {
     alert(response.data.message)
     localStorage.setItem('token',response.data.token)
-    window.location.href = "../ExpanseTracker/index.html"
+    window.location.href = "../ExpenseTracker/index.html"
    })
    .catch(err => {
     console.log(JSON.stringify(err))

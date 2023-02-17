@@ -23,12 +23,7 @@ exports.getExpense = async (req, res)=>{
 exports.deleteExpense = async (req, res)=>{
     const expenseid = req.params.expenseid;
     try{
-        // if(expenseid== undefined || expenseid.length == 0){
-        //   return  res.status(400).json({success: false})
-            // console.log('ID is missing');
-            // return res.status(400).json({err: 'ID is missing'})
-       // }
-      await Expense.destroy({where: {id: expenseid}});
+      await Expense.destroy({where: {id: expenseid, userId : req.user.id}});
       res.sendStatus(200);
     } catch(err){
         console.log(err);

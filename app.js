@@ -10,15 +10,21 @@ const User = require('./models/user');
 const Expense = require('./models/expense');
 const userRoutes = require('./routes/user');
 const expenseRoutes= require('./routes/expense');
+const purchaseRoute = require('./routes/purchase');
+const Order = require('./models/order');
 
 app.use(bodyParser.json({ extended: false }));
 //app.use(bodyParser.json)
 
 app.use(userRoutes);
 app.use(expenseRoutes);
+app.use(purchaseRoute);
 
 User.hasMany(Expense);
 Expense.belongsTo(User);
+
+User.hasMany(Order);
+Order.belongsTo(User);
 
 sequelize
  //.sync({force: true})
