@@ -29,7 +29,7 @@ User.hasMany(Order);
 Order.belongsTo(User);
 
 sequelize
- //.sync({force: true})
+// .sync({force: true})
  .sync()
  .then(result =>{
     app.listen(3000);

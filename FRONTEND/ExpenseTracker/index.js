@@ -11,7 +11,7 @@ function addNewExpense(e){
     const token = localStorage.getItem('token');
     axios.post('http://localhost:3000/expense/addexpense', expenseDetails, { headers:{"Authorization": token} })
     .then((response) =>{
-        addNewExpenseToUI(response.data.expenseDeatils);
+        addNewExpenseToUI(response.data.expenseDetails);
     }).catch(err => console.log(err))
 
 }
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
     axios.get('http://localhost:3000/expense/getexpenses', { headers: {'Authorization': token}})
      .then(response =>{
-        response.data.expenses.forEach(expense=> {
+        response.data.expense.forEach(expense=> {
           addNewExpenseToUI(expense)  
         }) 
           
@@ -91,7 +91,7 @@ function showLeaderboard(){
        var leaderboardElem = document.getElementById('leaderboard')
        leaderboardElem.innerHTML += '<h1> Leader Board</h1>'
        userLeaderBoardArray.data.forEach((userDetails)=> {
-         leaderboardElem.innerHTML += `<li>Name -${userDetails.name} Total Expense -${userDetails.total_cost || 0} </li>`
+         leaderboardElem.innerHTML += `<li>Name -${userDetails.name} Total Expense -${userDetails.totalExpenses || 0} </li>`
        })
     }
     document.getElementById("message").appendChild(inputElement);
