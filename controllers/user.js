@@ -27,9 +27,8 @@ exports.postSignup = async(req, res, next) => {
         res.status(500).json(err);
     }
 }
-
-function generatetoAccessToken(id, name){
-    return jwt.sign({ userId: id , name: name}, 'secretkey');
+const generatetoAccessToken = (id, name,ispremiumuser)=>{
+    return jwt.sign({ userId: id , name: name, ispremiumuser}, 'secretkey');
 }
 
 exports.postLogin = async(req, res, next) => {
@@ -45,7 +44,7 @@ exports.postLogin = async(req, res, next) => {
                     throw new Error('Something went wrong')
                 }
                 if (result === true){
-                    res.status(200).json({success: true, message: "User logged in successfully", token: generatetoAccessToken(user[0].id, user[0].name)})   
+                    res.status(200).json({success: true, message: "User logged in successfully", token: generatetoAccessToken(user[0].id, user[0].name, user[0].ispremiumuser)})   
                 }
                 else{
                     return res.status(400).json({success: false, message: "Password is incorrect"})
@@ -58,3 +57,5 @@ exports.postLogin = async(req, res, next) => {
         res.status(500).json({message: err, success: false})
     }
 }
+
+//module.exports = {generatetoAccessToken}
