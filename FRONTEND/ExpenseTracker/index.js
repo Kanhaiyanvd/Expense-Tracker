@@ -11,7 +11,7 @@ function addNewExpense(e){
     const token = localStorage.getItem('token');
     axios.post('http://localhost:3000/expense/addexpense', expenseDetails, { headers:{"Authorization": token} })
     .then((response) =>{
-        addNewExpenseToUI(response.data.expenseDetails);
+        addNewExpenseToUI(response.data.expense);
     }).catch(err => console.log(err))
 
 }

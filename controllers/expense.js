@@ -1,33 +1,30 @@
 const Expense = require('../models/expense');
 const User = require('../models/user');
+const seqeilize = require('../util/database');
 
 exports.addExpense = async (req, res) =>{
-   //try{
+   const t = await seqeilize.transaction();
+   try{
     const {expenseamount, description, category} = req.body;
 
     if(expenseamount== undefined || expenseamount.length==0){
         return res.status(400).json({seccess: false, message:'parameter is missing'})
     }
-
-     Expense.create({expenseamount, description, category,userId: req.user.id}).then(expense =>{
-        const totalExpenses = Number(req.user.totalExpenses)+ Number(expenseamount)
-        console.log(totalExpenses);
-        User.update({
-            totalExpenses: totalExpenses
-        },{
-            where : {id:req.user.id}
-        }).then(async()=>{
-            res.status(200).json({expense:expense})
-        }).catch(async(err)=>{
-            return res.status(500).json({success: false, error:err})
-        }).catch(async(err)=>{
-            return res.status(500).json({success:false, error:err})
+    const expense = await Expense.create({expenseamount, description, category,userId: req.user.id }, {transaction: t })
+    const totalExpense = Number(req.user.totalExpenses)+ Number(expenseamount) 
+    await User.update({
+         totalExpenses: totalExpense
+      },{
+            where : {id:req.user.id},
+            transaction: t
         })
-    })
-    // res.status(201).json({expenseDeatils: data})
-//    } catch(err){
-//     res.status(500).json(err);
-//    }
+         await t.commit();
+         res.status(200).json({expense:expense})
+        
+    } catch(err){
+        await t.rollback();
+        return res.status(500).json({success:false, error:err})
+     }
 }
 
 exports.getExpense = async (req, res)=>{
