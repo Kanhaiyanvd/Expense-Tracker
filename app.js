@@ -11,8 +11,10 @@ const Expense = require('./models/expense');
 const userRoutes = require('./routes/user');
 const expenseRoutes= require('./routes/expense');
 const purchaseRoute = require('./routes/purchase');
+const resetpasswordRoute = require('./routes/resetpassword');
 const premiumFeatureRoute = require('./routes/premiumFeature');
 const Order = require('./models/order');
+const Forgotpassword = require('./models/forgotpassword');
 
 app.use(bodyParser.json({ extended: false }));
 //app.use(bodyParser.json)
@@ -21,6 +23,7 @@ app.use(userRoutes);
 app.use(expenseRoutes);
 app.use(purchaseRoute);
 app.use(premiumFeatureRoute );
+app.use(resetpasswordRoute);
 
 User.hasMany(Expense);
 Expense.belongsTo(User);
@@ -28,8 +31,12 @@ Expense.belongsTo(User);
 User.hasMany(Order);
 Order.belongsTo(User);
 
+User.hasMany(Forgotpassword);
+Forgotpassword.belongsTo(User);
+
+
 sequelize
-// .sync({force: true})
+ //.sync({force: true})
  .sync()
  .then(result =>{
     app.listen(3000);

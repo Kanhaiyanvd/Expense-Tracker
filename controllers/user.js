@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 function isstringinvalid(string){
     if(string == undefined || string.length === 0){
-        return true
+         return true
     }
     else{
         return false

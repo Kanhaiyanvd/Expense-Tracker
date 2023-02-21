@@ -79,6 +79,26 @@ function deleteExpense(expenseid) {
     document.getElementById(expenseElemId).remove();
  }
 
+ function download(){
+    axios.get('http://localhost:3000/user/download', { headers: {"Authorization" : token} })
+    .then((response) => {
+        if(response.status === 201){
+            //the bcakend is essentially sending a download link
+            //  which if we open in browser, the file would download
+            var a = document.createElement("a");
+            a.href = response.data.fileUrl;
+            a.download = 'myexpense.csv';
+            a.click();
+        } else {
+            throw new Error(response.data.message)
+        }
+
+    })
+    .catch((err) => {
+        showError(err)
+    });
+}
+
 function showLeaderboard(){
     const inputElement = document.createElement('input');
     inputElement.type = "button";
@@ -122,8 +142,17 @@ const rzp1 = new Razorpay(options);
 rzp1.open();
 e.preventDefault();
 
-rzp1.on('payment.failed', function (response){
-    console.log(response);
-    alert('Something went wrong')
-})
+// rzp1.on('payment.failed', function (response){
+//     console.log(response);
+//     alert('Something went wrong')
+    rzp1.on('payment.failed', function (response){
+        alert(response.error.code);
+        alert(response.error.description);
+        alert(response.error.source);
+        alert(response.error.step);
+        alert(response.error.reason);
+        alert(response.error.metadata.order_id);
+        alert(response.error.metadata.payment_id);
+       });
+
 }
