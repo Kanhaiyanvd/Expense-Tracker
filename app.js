@@ -1,20 +1,22 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
+const sequelize = require('./util/database');
 
 const app = express();
-const cors = require('cors');
 app.use(cors())
 
-const sequelize = require('./util/database');
 const User = require('./models/user');
 const Expense = require('./models/expense');
+const Order = require('./models/order');
+const Forgotpassword = require('./models/forgotpassword');
+const DownloadedFile = require('./models/downlededFile');
+
 const userRoutes = require('./routes/user');
 const expenseRoutes= require('./routes/expense');
 const purchaseRoute = require('./routes/purchase');
 const resetpasswordRoute = require('./routes/resetpassword');
 const premiumFeatureRoute = require('./routes/premiumFeature');
-const Order = require('./models/order');
-const Forgotpassword = require('./models/forgotpassword');
 
 app.use(bodyParser.json({ extended: false }));
 //app.use(bodyParser.json)
@@ -42,5 +44,3 @@ sequelize
     app.listen(3000);
  })
  .catch(err => console.log(err));
-
-//app.listen(3000);

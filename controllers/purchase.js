@@ -1,7 +1,7 @@
 const Razorpay = require('razorpay');
 const Order = require('../models/order');
 const jwt = require('jsonwebtoken')
-//const userController = ('./user');
+
 const generatetoAccessToken = (id, name,ispremiumuser)=>{
     return jwt.sign({ userId: id , name: name, ispremiumuser}, 'secretkey');
 }
@@ -9,10 +9,8 @@ const generatetoAccessToken = (id, name,ispremiumuser)=>{
 const purchasepremium = async(req, res)=>  {
     try{
         var rzp = new Razorpay({
-            key_id: 'rzp_test_WTmrGpvNihL9qM',
-            key_secret: '0FeVhUPtH6eJgk3jVOjHOQmY'
-            // key_id : 'rzp_test_hXfr2HJ7Xef2Fv',
-            // key_secret : 'iWkTcNsIo1hcYg3zAGM4I9wY'
+            key_id: 'rzp_test_K0UlPbw5xDPGMy',
+            key_secret:'XdenfACiJ8h4PTDd3JQ86HHR'
         })
         const amount = 2500;
 
@@ -50,8 +48,6 @@ const updateTransactionStatus = async(req, res)=>{
         console.log(err);
     }
 } 
-
-
 
 module.exports = {
     purchasepremium,
