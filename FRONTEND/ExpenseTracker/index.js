@@ -1,3 +1,33 @@
+//let link = document.getElementsByClassName("link");
+let pagination = document.getElementById('pagination')
+//let currentValue = 1;
+
+// function activeLink(){
+//     for(l of link){
+//         l.classList.remove("active");
+//     }
+//     event.target.classList.add("active");
+//     currentValue = event.target.value;
+// }
+// function backBtn(){
+//     if(currentValue > 1){
+//         for(l of link){
+//        l.classList.remove("active") 
+//       }
+//       currentValue--;
+//       link[currentValue-1].classList.add("active");
+//     }
+// }
+// function nextBtn(){
+//     if(currentValue < 5){
+//         for(l of link){
+//        l.classList.remove("active") 
+//       }
+//       currentValue++;
+//       link[currentValue-1].classList.add("active");
+//     }
+// }
+
 function addNewExpense(e){
     e.preventDefault();
 
@@ -32,6 +62,8 @@ function parseJwt (token) {
 }
 
 document.addEventListener('DOMContentLoaded',async ()=>{
+   // const page = 1;
+
     const token = localStorage.getItem('token');
     const decodedToken = parseJwt(token);
     console.log(decodedToken)
@@ -41,10 +73,11 @@ document.addEventListener('DOMContentLoaded',async ()=>{
         showLeaderboard();
     };
 
-     axios.get('http://localhost:3000/expense/getexpenses', { headers: {'Authorization': token}})
-     .then(response =>{
+     axios.get(`http://localhost:3000/expense/getexpenses`, { headers: {'Authorization': token}})
+     .then((response) =>{
         response.data.expense.forEach(expense=> {
-          addNewExpenseToUI(expense)  
+          addNewExpenseToUI(expense);
+         // showPagination(response.pageData)
         }) 
           
      })
@@ -65,6 +98,42 @@ function addNewExpenseToUI(expense) {
    // parentNode.innerHTML = parentNode.innerHTML + childHTML;
 
 }
+
+// function showPagination({currentPage,hasNextPage,
+//       nextPage,
+//     hasPreviousPage,
+//     previousPage,
+//     lastPage,
+// }){
+//     pagination.innerHTML='';
+
+//     if(hasPreviousPage){
+//         const btn2 = document.createElement('button');
+//         btn2.innerHTML = previousPage
+//         btn2.addEventListener('click', ()=>getPages(previousPage))
+//         pagination.appendChild(btn2)
+//     }
+//     const btn1 = document.createElement('button')
+//     btn1.innerHTML= `<h1>${currentPage}</h3>`
+//     btn1.addEventListener('click', ()=>getPages(currentPage))
+//     pagination.appendChild(btn1)
+
+//     if(hasNextPage){
+//         const btn3 = document.createElement('button')
+//         btn3.innerHTML = nextPage
+//         btn3.addEventListener('click',()=>getPages)
+//         pagination.appendChild(btn3)
+//     };
+// }
+
+// function getItem(page){
+//     axios.get(`http://localhost:3000/expense/getexpenses?page-${page}`)
+//     .then(({data:{expense, ...pageData}})=>{
+//         addNewExpenseToUI(expense);
+//           showPagination(pageData)
+//     }).catch(err=>console.log(err))
+// }
+
 function deleteExpense(expenseid) {
     const token = localStorage.getItem('token')
     axios.delete(`http://localhost:3000/expense/deleteexpense/${expenseid}`,{ headers: {'Authorization': token}})
@@ -110,7 +179,7 @@ function showLeaderboard(){
        console.log(userLeaderBoardArray);
 
        var leaderboardElem = document.getElementById('leaderboard')
-       leaderboardElem.innerHTML += '<h1> Leader Board</h1>'
+       leaderboardElem.innerHTML += '<h3> Leader Board</h3>'
        userLeaderBoardArray.data.forEach((userDetails)=> {
          leaderboardElem.innerHTML += `<li>Name -${userDetails.name} Total Expense -${userDetails.totalExpenses || 0} </li>`
        })
@@ -142,10 +211,6 @@ document.getElementById("rzp-button1").onclick = async function(e){
 const rzp1 = new Razorpay(options);
 rzp1.open();
 e.preventDefault();
-
-// rzp1.on('payment.failed', function (response){
-//     console.log(response);
-//     alert('Something went wrong')
     rzp1.on('payment.failed', function (response){
         alert(response.error.code);
         alert(response.error.description);

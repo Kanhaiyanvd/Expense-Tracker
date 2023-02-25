@@ -1,10 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors');
 const sequelize = require('./util/database');
+const compression = require('compression');
+require('dotenv').config()
 
 const app = express();
-app.use(cors())
+
+const cors = require('cors');
+const helmet = require('helmet');
+app.use(cors());
+app.use(helmet());
+app.use(compression());
 
 const User = require('./models/user');
 const Expense = require('./models/expense');
@@ -25,7 +31,7 @@ app.use(userRoutes);
 app.use(expenseRoutes);
 app.use(purchaseRoute);
 app.use(premiumFeatureRoute );
-app.use(resetpasswordRoute);
+app.use('/password',resetpasswordRoute);
 
 User.hasMany(Expense);
 Expense.belongsTo(User);

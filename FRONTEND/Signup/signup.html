@@ -4,20 +4,21 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>User Signup</title>
+    <link rel="stylesheet" href="signup.css">
 </head>
 <body>
+    <h1>Welcome to Expense Tracker. Signup to tracke your exoenses and save more </h1>
     <form onsubmit="signup(event)">
         <label for="name">Enter name</label>
-        <input type="text" id="name" name="name" required>
+        <input type="text" id="name" name="name" required><br>
         <label for="email">Enter email</label>
-        <input type="text" id="email" name="email" required>
+        <input type="email" id="email" name="email" required><br>
         <label for="password">Enter password</label>
-        <input type="text" id="password" name="password" required>
-        <button>Signup</button>
-        <h2>SIGN UP</h2>
+        <input type="password" id="password" name="password" required><br><br>
+        <button>Signup</button><br><br>
+        <a href="../Login/login.html">Existing User - Login</a>
     </form>
-    <a href="../Login/login.html">Existing User - Login</a>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
     <script src="signup.js"></script>
 </body>

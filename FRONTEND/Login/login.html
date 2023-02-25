@@ -4,20 +4,22 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <h2>LOGIN</h2>
+    <title>User Login</title>
+    <link rel="stylesheet" href="login.css">
 </head>
 <body>
+   <h1>Login to see your Expense Details</h1>
     <form onsubmit="login(event)">
       <label for="email">Enter email</label>
-      <input type="text" id="email" name="email" required>
+      <input type="email" id="email" name="email" required><br>
       <label for="password">Enter password</label>
-      <input type="text" id="password" name="password" required>
-      <button>Login</button>
+      <input type="password" id="password" name="password" required><br>
+      <button>Login</button><br><br>
+      <a href="../Signup/signup.html">New User - Signup</a><br><br>
+      <a href="../ForgotPassword/index.html">Forgot Password</a>
     </form>
-    <a href="../Signup/signup.html">New User - Signup</a><br><br>
-    <a href="../ForgotPassword/index.html">Forgot Password</a>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
     <script src="login.js"></script>
+    <h4>Tracke Expense , save more , invest more</h4>
 </body>
 </html>

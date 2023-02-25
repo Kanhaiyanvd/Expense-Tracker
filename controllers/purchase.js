@@ -9,8 +9,8 @@ const generatetoAccessToken = (id, name,ispremiumuser)=>{
 const purchasepremium = async(req, res)=>  {
     try{
         var rzp = new Razorpay({
-            key_id: 'rzp_test_K0UlPbw5xDPGMy',
-            key_secret:'XdenfACiJ8h4PTDd3JQ86HHR'
+            key_id: process.env.RAZORPAY_KEY_ID,
+            key_secret:process.env.RAZORPAY_KEY_SECRET
         })
         const amount = 2500;
 

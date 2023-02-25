@@ -5,14 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <h2>welcome home , save your daily expenses here</h2>
+    <link rel="stylesheet" href="addExpense.css">
+    <h1>welcome home , save your daily expenses here</h1>
 </head>
 <body>
-    <form onsubmit="addNewExpense(event)">
+    <form id="form" onsubmit="addNewExpense(event)">
         <label for="expenseamount">Choose expenseamount:</label>
-        <input type="number" name="expenseamount" required>
+        <input type="number" name="expenseamount" required><br>
         <label for="description">Chosse description:</label>
-        <input type="text" name="description" required>
+        <input type="text" name="description" required><br>
         <label for="category">Choose a category:</label>
         <select name="category" id="category">
             <option value="fuel">fuel</option>
@@ -20,17 +21,36 @@
             <option value="electricity">electricity</option>
             <option value="movie">movie</option>
         </select>
-        <button type="submit">Add Expense</button>
+        <button type="submit">Add Expense</button><br><br>
+        <button id="rzp-button1">Buy Premium</button>
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     </form>
+    <form id="form">
     <div id="message"></div>
-    <button id="rzp-button1">Buy Premium</button>
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    
     <ul id="listOfExpenses">
 
     </ul>
     <ul id="leaderboard"></ul>
+    <ul id="pagination"></ul>
     <button onclick="download()" id="downloadexpense">Download File</button>
+</form>
+ <!-- <div >
+     <div class="pagination">
+       <button class="btn1" onclick="backBtn()"><img src="arrow.png"> prev</button>
+       <ul>
+        <li class="link active" value="1" onclick="activeLink()">1</li>
+        <li class="link" value="2" onclick="activeLink()">2</li>
+        <li class="link" value="3" onclick="activeLink()">3</li>
+        <li class="link" value="4" onclick="activeLink()">4</li>
+        <li class="link" value="5" onclick="activeLink()">5</li>
+       </ul> 
+       <button class="btn2"  onclick="nextBtn()"><img src="arrow.png">next</button> 
+     </div>
+  </div> -->
     <script src="index.js"></script>
+     
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
 </body>
 </html>
