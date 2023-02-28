@@ -9,8 +9,8 @@ const app = express();
 const cors = require('cors');
 const helmet = require('helmet');
 app.use(cors());
-app.use(helmet());
-app.use(compression());
+//app.use(helmet());
+//app.use(compression());
 
 const User = require('./models/user');
 const Expense = require('./models/expense');

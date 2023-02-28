@@ -53,55 +53,21 @@ exports.downloadExpense = async (req, res) =>{
         return res.status(500).json({success:false, error:err})
      }
 }
-
-exports.getExpense = async (req, res)=>{
-    // try{
-    //     console.log(req.query);
-    //     const page=+req.query.page||1;
-    //     const limit=+req.query.limit||5;
-
-
-    //     const totalExpense=req.user.totalExpenses;
-
-
-    //     console.log(">>>>>>>>>>",totalExpense);
-
-    //   /*  const response=await Expense.findAll(); */
-    //    /* const response =await Expense.findAll({where:{userId:req.user.id}}); */
-    //    const total  = await req.user.getExpenses();
-
-    //    const response =await req.user.getExpenses({
-    //     offset:(page-1)*limit,
-    //     limit:limit
-    //    });
-
-    //     res.status(200).json({message:response,
-    //         success:true,
-    //         currentpage:page,
-    //         nextpage:page+1,
-    //         previouspage:page-1,
-    //         hasnextpage:limit*page<total.length,
-    //         haspreviouspage:page>1,
-    //         lastpage:Math.ceil(total.length/limit),
-    //         totalExpense:totalExpense
-    //     });
-    // }
-    // catch(err){
-    //     console.log(">>>>>>>>",err)
-    //     res.status(500).json({message:err,success:false});
-
-    // }
-
-    try{
-    // const page = +req.query.page || 1;
-    // let totalexpense;
-        const expense = await req.user.getExpenses()
-        return res.status(200).json({expense, success: true})
-    
-}catch(err){
-    console.log(err)
+exports.getExpenses = async (req, res) => {
+    try {
+        const totalCount=await UserServices.countExpenses(req.user);
+        const { page, rows } = req.query;
+        offset = (page-1)*rows
+        limit = rows * 1;
+        const expenses = await req.user.getExpenses(req.user, { offset, limit });
+        res.status(200).json({expenses,totalCount});
+    }
+    catch (error) {
+        res.status(504).json({ message: 'Something went wrong!', error: error });
+        console.log(error);
+    }
 }
-}
+
 exports.deleteExpense = async (req, res)=>{
     const expenseid = req.params.expenseid;
     try{

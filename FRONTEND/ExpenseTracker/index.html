@@ -25,29 +25,28 @@
         <button id="rzp-button1">Buy Premium</button>
         <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     </form>
-    <form id="form">
-    <div id="message"></div>
     
-    <ul id="listOfExpenses">
-
-    </ul>
+    <div id="message"></div>
     <ul id="leaderboard"></ul>
-    <ul id="pagination"></ul>
-    <button onclick="download()" id="downloadexpense">Download File</button>
-</form>
- <!-- <div >
-     <div class="pagination">
-       <button class="btn1" onclick="backBtn()"><img src="arrow.png"> prev</button>
-       <ul>
-        <li class="link active" value="1" onclick="activeLink()">1</li>
-        <li class="link" value="2" onclick="activeLink()">2</li>
-        <li class="link" value="3" onclick="activeLink()">3</li>
-        <li class="link" value="4" onclick="activeLink()">4</li>
-        <li class="link" value="5" onclick="activeLink()">5</li>
-       </ul> 
-       <button class="btn2"  onclick="nextBtn()"><img src="arrow.png">next</button> 
-     </div>
-  </div> -->
+    <h3>Expenses</h3>
+    <ul id="listOfExpenses"></ul>
+   
+<div id="pagination" class="pagination">
+    <label for="rows">Rows per page :</label>
+    <select id="rows-per-page"name="rows" onchange="showChangedRows()">
+        <option value="5">5</option>
+        <option value="10" >10</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+        <option value="25">25</option>
+    </select>
+    <label id="page-details">Showing 1-5 of 11</label>
+    <button id="prev-btn" onclick="showPreviousPage()">prev</button>
+    <button id="next-btn" onclick="showNextPage()">next</button>
+</div>
+   <ul id="leaderboard"></ul>
+   <button onclick="download()" id="downloadexpense">Download File</button>
+
     <script src="index.js"></script>
      
 

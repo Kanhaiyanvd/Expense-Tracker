@@ -1,32 +1,6 @@
-//let link = document.getElementsByClassName("link");
-let pagination = document.getElementById('pagination')
-//let currentValue = 1;
-
-// function activeLink(){
-//     for(l of link){
-//         l.classList.remove("active");
-//     }
-//     event.target.classList.add("active");
-//     currentValue = event.target.value;
-// }
-// function backBtn(){
-//     if(currentValue > 1){
-//         for(l of link){
-//        l.classList.remove("active") 
-//       }
-//       currentValue--;
-//       link[currentValue-1].classList.add("active");
-//     }
-// }
-// function nextBtn(){
-//     if(currentValue < 5){
-//         for(l of link){
-//        l.classList.remove("active") 
-//       }
-//       currentValue++;
-//       link[currentValue-1].classList.add("active");
-//     }
-// }
+//let pagination = document.getElementById('pagination')
+let currentPage = 1;
+let rowsPerPage = localStorage.getItem('rowsPerPage')?  localStorage.getItem('rowsPerPage'):5;
 
 function addNewExpense(e){
     e.preventDefault();
@@ -61,33 +35,36 @@ function parseJwt (token) {
     return JSON.parse(jsonPayload);
 }
 
-document.addEventListener('DOMContentLoaded',async ()=>{
-   // const page = 1;
-
+async function getExpenses(){
+try{
     const token = localStorage.getItem('token');
     const decodedToken = parseJwt(token);
-    console.log(decodedToken)
+    
     const ispremiumuser = decodedToken.ispremiumuser;
     if(ispremiumuser){
         showPremiumuserMessage();
         showLeaderboard();
     };
 
-     axios.get(`http://localhost:3000/expense/getexpenses`, { headers: {'Authorization': token}})
-     .then((response) =>{
-        response.data.expense.forEach(expense=> {
-          addNewExpenseToUI(expense);
-         // showPagination(response.pageData)
-        }) 
-          
-     })
-     .catch(err => console.log(err));
-})
+   const response = await axios.get(`http://localhost:3000/expense/getexpenses?page=${currentPage}&rows=${rowsPerPage}`, { headers: {'Authorization': token}})
+   document.getElementById('listOfExpenses').innerHTML = "";
+   const { expenses, totalCount } = response.data;
+   pagination(totalCount);
+   if (expenses.length > 0) {
+       for (let i = 0; i < expenses.length; i++) {
+        addNewExpenseToUI(expenses[i]);
+       }
+   } else {
+       document.getElementById('err').textContent = "Currently there are no Expenses!"
+   }
+} catch (error) {
+   console.log(error);
+}
+}
 
 function addNewExpenseToUI(expense) {
     const parentElement = document.getElementById("listOfExpenses");
     const expenseElemId = `expense-${expense.id}`;
-    //const expenseElemId = `${expense.id}`;
     parentElement.innerHTML +=
      `<li id=${expenseElemId}>
         ${expense.expenseamount} - ${expense.description} - ${expense.category}
@@ -95,44 +72,8 @@ function addNewExpenseToUI(expense) {
            Delete Expense 
         </button>
     </li>`
-   // parentNode.innerHTML = parentNode.innerHTML + childHTML;
-
 }
-
-// function showPagination({currentPage,hasNextPage,
-//       nextPage,
-//     hasPreviousPage,
-//     previousPage,
-//     lastPage,
-// }){
-//     pagination.innerHTML='';
-
-//     if(hasPreviousPage){
-//         const btn2 = document.createElement('button');
-//         btn2.innerHTML = previousPage
-//         btn2.addEventListener('click', ()=>getPages(previousPage))
-//         pagination.appendChild(btn2)
-//     }
-//     const btn1 = document.createElement('button')
-//     btn1.innerHTML= `<h1>${currentPage}</h3>`
-//     btn1.addEventListener('click', ()=>getPages(currentPage))
-//     pagination.appendChild(btn1)
-
-//     if(hasNextPage){
-//         const btn3 = document.createElement('button')
-//         btn3.innerHTML = nextPage
-//         btn3.addEventListener('click',()=>getPages)
-//         pagination.appendChild(btn3)
-//     };
-// }
-
-// function getItem(page){
-//     axios.get(`http://localhost:3000/expense/getexpenses?page-${page}`)
-//     .then(({data:{expense, ...pageData}})=>{
-//         addNewExpenseToUI(expense);
-//           showPagination(pageData)
-//     }).catch(err=>console.log(err))
-// }
+document.addEventListener('DOMContentLoaded', getExpenses);
 
 function deleteExpense(expenseid) {
     const token = localStorage.getItem('token')
@@ -221,4 +162,31 @@ e.preventDefault();
         alert(response.error.metadata.payment_id);
        });
 
+}
+
+function pagination(totalCount) {
+    maxPages = Math.ceil(totalCount / rowsPerPage);
+    document.getElementById('prev-btn').style.display = currentPage > 1 ? "block" : "none";
+    document.getElementById('next-btn').style.display = maxPages > currentPage ? "block" : "none";
+    document.getElementById('rows-per-page').value=rowsPerPage;
+    const start = (currentPage - 1) * rowsPerPage + 1;
+    const temp=start + Number(rowsPerPage)-1;
+    const end = temp<totalCount? temp:totalCount;
+    document.getElementById('page-details').textContent = `Showing ${start}-${end} of ${totalCount}`;
+}
+
+function showChangedRows() {
+    rowsPerPage = event.target.value;
+    localStorage.setItem('rowsPerPage',rowsPerPage);
+    location.reload();
+}
+
+function showPreviousPage() {
+    currentPage--;
+    getExpenses();
+}
+
+function showNextPage() {
+    currentPage++;
+    getExpenses();
 }
